@@ -32,6 +32,7 @@ class LineFrequentWords {
                     }
                 }
             }
+            val sorted = words.toList().sortedBy { it.second }.toMap()
         }
     }
 }
