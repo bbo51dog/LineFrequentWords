@@ -10,7 +10,9 @@ repositories {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile group: 'com.atilika.kuromoji', name: 'kuromoji-ipadic', version: '0.9.0'
+
 }
 
 compileKotlin {
