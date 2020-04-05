@@ -18,12 +18,14 @@ class LineFrequentWords {
             val replaceRegex = Regex("""([0-1][0-9]|2[0-3]):[0-5][0-9]\t.+\t""")
             val tokenizer = Tokenizer()
             val words = mutableMapOf<String, Int>()
+            var messageCount = 0
             logFile.forEachLine {
                 if (!messageRegex.matches(it)) {
                     return@forEachLine
                 }
                 var message = it.replace(replaceRegex, "")
-                if (message == "[スタンプ]") {
+                messageCount++
+                if (message == "[スタンプ]" || message == "[写真]" || message == "[動画]") {
                     return@forEachLine
                 }
                 var tokens = tokenizer.tokenize(message)
@@ -43,6 +45,7 @@ class LineFrequentWords {
                 println("$i : $word ($count)")
                 sorted.remove(word)
             }
+            println("$messageCount M messages")
         }
     }
 }
