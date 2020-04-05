@@ -45,7 +45,7 @@ class LineFrequentWords {
                 println("$i : $word ($count)")
                 sorted.remove(word)
             }
-            println("$messageCount M messages")
+            println("$messageCount messages")
         }
     }
 }
