@@ -14,8 +14,8 @@ class LineFrequentWords {
                 exitProcess(1)
             }
             val logFile = File(fileName)
-            val messageRegex = Regex("""[0-1][0-9]|2[0-3]:[0-5][0-9]\t.*\t.*""")
-            val replaceRegex = Regex("""[0-1][0-9]|2[0-3]:[0-5][0-9]\t.*\t""")
+            val messageRegex = Regex("""([0-1][0-9]|2[0-3]):[0-5][0-9]\t.+\t.+""")
+            val replaceRegex = Regex("""([0-1][0-9]|2[0-3]):[0-5][0-9]\t.+\t""")
             val tokenizer = Tokenizer()
             val words = mutableMapOf<String, Int>()
             logFile.forEachLine {
