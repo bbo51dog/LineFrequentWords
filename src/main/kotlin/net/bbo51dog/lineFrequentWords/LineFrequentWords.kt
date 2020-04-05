@@ -25,35 +25,50 @@ class LineFrequentWords {
             val tokenizer = Tokenizer()
             val words = mutableMapOf<String, Int>()
             var messageCount = 0
+            var stampCount = 0
+            var imageCount = 0
+            var movieCount = 0
             logFile.forEachLine {
                 if (!messageRegex.matches(it)) {
                     return@forEachLine
                 }
-                var message = it.replace(replaceRegex, "")
+                val message = it.replace(replaceRegex, "")
                 messageCount++
-                if (message == "[スタンプ]" || message == "[写真]" || message == "[動画]") {
+                if (message == "[スタンプ]") {
+                    stampCount++
                     return@forEachLine
                 }
-                var tokens = tokenizer.tokenize(message)
+                if (message == "[写真]") {
+                    imageCount++
+                    return@forEachLine
+                }
+                if (message == "[動画]") {
+                    movieCount++
+                    return@forEachLine
+                }
+                val tokens = tokenizer.tokenize(message)
                 tokens.forEach {token ->
                     if (ignorePart.contains(token.partOfSpeechLevel1)) return@forEach
-                    if(token.surface.length <= 2) return@forEach
-                    words[token.surface + token.partOfSpeechLevel1] = if (words.containsKey(token.surface + token.partOfSpeechLevel1)) {
-                        words[token.surface + token.partOfSpeechLevel1]!!.toInt() + 1
+                    if (token.surface.length <= 2) return@forEach
+                    words[token.surface] = if (words.containsKey(token.surface)) {
+                        words[token.surface]!!.toInt() + 1
                     } else {
                         1
                     }
                 }
             }
-            var sorted: MutableMap<String, Int> = words.toList().sortedByDescending{ it.second }.toMap().toMutableMap()
+            val sorted: MutableMap<String, Int> = words.toList().sortedByDescending{ it.second }.toMap().toMutableMap()
             for (i in 1..20) {
                 if (sorted.isEmpty()) break
-                var word = sorted.keys.first()
-                var count = sorted[word]
+                val word = sorted.keys.first()
+                val count = sorted[word]
                 println("$i : $word ($count)")
                 sorted.remove(word)
             }
-            println("$messageCount messages")
+            println("$messageCount messages (including stamps, images, and movies)")
+            println("$stampCount stamps")
+            println("$imageCount images")
+            println("$movieCount movies")
         }
     }
 }
