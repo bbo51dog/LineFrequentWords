@@ -23,6 +23,9 @@ class LineFrequentWords {
                     return@forEachLine
                 }
                 var message = it.replace(replaceRegex, "")
+                if (message == "[スタンプ]") {
+                    return@forEachLine
+                }
                 var tokens = tokenizer.tokenize(message)
                 tokens.forEach {token ->
                     words[token.surface] = if (words.containsKey(token.surface)) {
@@ -32,7 +35,14 @@ class LineFrequentWords {
                     }
                 }
             }
-            val sorted = words.toList().sortedBy { it.second }.toMap()
+            var sorted: MutableMap<String, Int> = words.toList().sortedByDescending{ it.second }.toMap().toMutableMap()
+            for (i in 1..10) {
+                if (sorted.isEmpty()) break
+                var word = sorted.keys.first()
+                var count = sorted[word]
+                println("$i : $word ($count)")
+                sorted.remove(word)
+            }
         }
     }
 }
